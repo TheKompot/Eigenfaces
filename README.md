@@ -1,2 +1,2 @@
 # Eigenfaces
-Semester for class Principles of Data Science
+Semester project for class Principles of Data Science
