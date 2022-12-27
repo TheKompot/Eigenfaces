@@ -79,7 +79,7 @@ class Predictor:
             label = None
             smallest_dist = None
 
-            for j in range(self.n_clusters):
+            for j in range(self._centroids.shape[1]):
                 cluster = self._centroids[:,j]
                 
                 dist = np.linalg.norm(vec - cluster)
@@ -126,10 +126,18 @@ class ClusteringKMeans(Predictor):
         x = self.pca.transform(x)
         return super().predict(x)
 
-class Classifier(Predictor):
+class MemoryClassifier(Predictor):
 
-    def __init__(self):
-        pass
+    def __init__(self,k_dimensions:int):
+        self.k_dimensions = k_dimensions
 
     def fit(self, X:np.array, y:np.array):
-        pass
+        self.pca = DimensionalityReduction()
+        self._centroids = self.pca.fit_transform(X,self.k_dimensions).T
+        self.y = y.copy()
+
+    def predict(self, x:np.array) -> np.array:
+        x = self.pca.transform(x)
+        x = super().predict(x)
+
+        return np.array([self.y[i] for i in x])
