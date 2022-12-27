@@ -18,6 +18,15 @@ class EigenfacesInterface:
 class DimensionalityReduction(EigenfacesInterface):
     
     def fit(self,X:np.array, k:int):
+        ''' finds k biggests eigenvectors of matrix X for further calculations (e.g. transform)
+        
+        INPUT:
+        ------
+        X : np.array
+            input matrix with dimensions number_of_pictures x number_of_pixels
+        k : int
+            final number of dimensions
+        '''
         X = X.T # transpose so one column is one image
 
         self.avg_vector = np.mean(X,axis=1).reshape(1,-1) # average vector 
@@ -30,17 +39,27 @@ class DimensionalityReduction(EigenfacesInterface):
         #eigenvectors for n^2 x n^2 cov matrix
         e_vec = X@e_vec
 
+        # selecting k biggest eigenvectors
         e_vec = e_vec[:,:k]
 
         self.e_vec = e_vec
     
     def transform(self,x:np.array) -> np.array:
-
+        ''' applies dimesionality reduction on input matrix
+        
+        INPUT:
+        -----
+        x : np.array
+            input matrix with dimensions number_of_pictures x number_of_pixels
+        '''
+        # centering the data
         x = x - self.avg_vector
 
+        # applying the eigenmatrix transformation
         return x@self.e_vec
     
     def predict(self):
+        '''Predict has no use for dimensionality reduction'''
         pass
 
 
