@@ -141,3 +141,32 @@ class MemoryClassifier(Predictor):
         x = super().predict(x)
 
         return np.array([self.y[i] for i in x])
+
+class CentroidClassifier(Predictor):
+
+    def __init__(self,k_dimensions:int):
+        self.k_dimensions = k_dimensions
+
+    def fit(self, X:np.array, y:np.array):
+        self.pca = DimensionalityReduction()
+        X = self.pca.fit_transform(X,self.k_dimensions)
+        
+        vec_in_labels = {}
+        self.labels = []
+        for i in range(X.shape[0]):
+            if y[i] not in vec_in_labels:
+                vec_in_labels[y[i]] = []
+                self.labels.append(y[i])
+            vec_in_labels[y[i]].append(X[i,:])
+        
+        centroids = []
+        for i in self.labels:
+            arr = np.array(vec_in_labels[i])
+            centroids.append(np.mean(arr,axis=0))
+        self._centroids = np.array(centroids).T
+    
+    def predict(self, x:np.array) -> np.array:
+        x = self.pca.transform(x)
+        x = super().predict(x)
+
+        return np.array([self.labels[i] for i in x])
