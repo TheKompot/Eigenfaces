@@ -17,6 +17,9 @@ class EigenfacesInterface:
 
 class DimensionalityReduction(EigenfacesInterface):
     
+    def __init__(self):
+        self.e_vec = None
+
     def fit(self,X:np.array, k:int):
         ''' finds k biggests eigenvectors of matrix X for further calculations (e.g. transform)
         
@@ -52,6 +55,10 @@ class DimensionalityReduction(EigenfacesInterface):
         x : np.array
             input matrix with dimensions number_of_pictures x number_of_pixels
         '''
+
+        if self.e_vec is None:
+            raise NotFittedError("Needs to be first fitted to the trainning data")
+
         # centering the data
         x = x - self.avg_vector
 
