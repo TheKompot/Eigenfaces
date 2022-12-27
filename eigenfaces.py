@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.cluster import KMeans
 
 class NotFittedError(Exception):
     ''' Raised when model is asked to do something(e.g. predict) before it was fitted '''
@@ -66,7 +67,7 @@ class DimensionalityReduction:
 
 
 class Predictor:
-    '''Abstract class for further '''
+    '''Abstract class for further models'''
     def predict(self, x:np.array) -> np.array:
         if self._centroids is None:
             raise NotFittedError('Needs to be first fitted to the trainning data')
@@ -99,11 +100,31 @@ class ClusteringEig(Predictor):
         self._centroids = None
     
     def fit(self, X:np.array):
-        pca = DimensionalityReduction()
-        pca.fit(X,self.n_clusters)
+        self.pca = DimensionalityReduction()
+        self.pca.fit(X,self.n_clusters)
 
-        self._centroids = pca.e_vec
+        self._centroids = self.pca.e_vec
         
+class ClusteringKMeans(Predictor):
+    
+    def __init__(self, n_clusters:int, k_dimensions:int):
+        self.n_clusters = n_clusters
+        self.k_dimensions = k_dimensions
+        self._centroids = None
+        self._inertia = None
+    
+    def fit(self, X:np.array):
+        self.pca = DimensionalityReduction()
+        x = self.pca.fit_transform(X,self.k_dimensions)
+        
+        kmeans = KMeans(n_clusters=self.n_clusters)
+        kmeans.fit(x)
+        self._inertia = kmeans.inertia_
+        self._centroids = kmeans.cluster_centers_.T
+    
+    def predict(self,x:np.array)->np.array:
+        x = self.pca.transform(x)
+        return super().predict(x)
 
 class Classifier(Predictor):
 
