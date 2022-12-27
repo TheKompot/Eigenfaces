@@ -65,6 +65,11 @@ class DimensionalityReduction(EigenfacesInterface):
         # applying the eigenmatrix transformation
         return x@self.e_vec
     
+    def fit_transform(self, X:np.array, k:int) -> np.array:
+
+        self.fit(X,k)
+        return self.transform(X)
+
     def predict(self):
         '''Predict has no use for dimensionality reduction'''
         pass
