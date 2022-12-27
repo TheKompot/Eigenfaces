@@ -54,6 +54,11 @@ class DimensionalityReduction(EigenfacesInterface):
         -----
         x : np.array
             input matrix with dimensions number_of_pictures x number_of_pixels
+        
+        RETURNS
+        -------
+        np.array
+            transformed matrix with dimensions number_of_pictures x k, where 'k' is defined while fitting
         '''
 
         if self.e_vec is None:
@@ -66,7 +71,7 @@ class DimensionalityReduction(EigenfacesInterface):
         return x@self.e_vec
     
     def fit_transform(self, X:np.array, k:int) -> np.array:
-
+        '''Combination of methods fit and transform'''
         self.fit(X,k)
         return self.transform(X)
 
