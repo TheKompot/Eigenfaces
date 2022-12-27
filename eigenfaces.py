@@ -4,18 +4,7 @@ class NotFittedError(Exception):
     ''' Raised when model is asked to do something(e.g. predict) before it was fitted '''
     pass
 
-class EigenfacesInterface:
-    
-    def fit(self):
-        pass
-
-    def transform(self):
-        pass
-
-    def predict(self):
-        pass
-
-class DimensionalityReduction(EigenfacesInterface):
+class DimensionalityReduction:
     
     def __init__(self):
         self.e_vec = None
@@ -75,22 +64,9 @@ class DimensionalityReduction(EigenfacesInterface):
         self.fit(X,k)
         return self.transform(X)
 
-    def predict(self):
-        '''Predict has no use for dimensionality reduction'''
-        pass
 
-
-class ClusteringEig(DimensionalityReduction):
-
-    def __init__(self, n_clusters:int):
-        self.n_clusters = n_clusters
-        self._centroids = None
-    
-    def fit(self, X:np.array):
-        super().fit(X,self.n_clusters)
-
-        self._centroids = self.e_vec
-
+class Predictor:
+    '''Abstract class for further '''
     def predict(self, x:np.array) -> np.array:
         if self._centroids is None:
             raise NotFittedError('Needs to be first fitted to the trainning data')
@@ -112,15 +88,27 @@ class ClusteringEig(DimensionalityReduction):
                     smallest_dist = dist
             output.append(label)
         return np.array(output)
+
+    def fit(self, X:np.array):
+        pass
+
+class ClusteringEig(Predictor):
+
+    def __init__(self, n_clusters:int):
+        self.n_clusters = n_clusters
+        self._centroids = None
+    
+    def fit(self, X:np.array):
+        pca = DimensionalityReduction()
+        pca.fit(X,self.n_clusters)
+
+        self._centroids = pca.e_vec
         
 
-class Classifier(DimensionalityReduction):
+class Classifier(Predictor):
 
     def __init__(self):
         pass
 
     def fit(self, X:np.array, y:np.array):
-        pass
-
-    def predict(self, x:np.array) -> np.array:
         pass
