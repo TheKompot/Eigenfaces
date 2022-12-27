@@ -80,20 +80,38 @@ class DimensionalityReduction(EigenfacesInterface):
         pass
 
 
-class Clustering(DimensionalityReduction):
+class ClusteringEig(DimensionalityReduction):
 
     def __init__(self, n_clusters:int):
         self.n_clusters = n_clusters
-        self._clusters = None
+        self._centroids = None
     
     def fit(self, X:np.array):
-        pass
+        super().fit(X,self.n_clusters)
+
+        self._centroids = self.e_vec
 
     def predict(self, x:np.array) -> np.array:
-        if self._clusters is None:
+        if self._centroids is None:
             raise NotFittedError('Needs to be first fitted to the trainning data')
-        pass
+        
+        output = []
 
+        for i in range(x.shape[0]):
+            vec = x[i,:]
+            label = None
+            smallest_dist = None
+
+            for j in range(self.n_clusters):
+                cluster = self._centroids[:,j]
+                
+                dist = np.linalg.norm(vec - cluster)
+
+                if label is None or dist < smallest_dist:
+                    label = j
+                    smallest_dist = dist
+            output.append(label)
+        return np.array(output)
         
 
 class Classifier(DimensionalityReduction):
