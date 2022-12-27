@@ -57,8 +57,8 @@ class DimensionalityReduction:
         # centering the data
         x = x - self.avg_vector
 
-        # applying the eigenmatrix transformation
-        return x@self.e_vec
+        # finding the weights that define the linear combination of eigenvectors that create vector x
+        return np.linalg.lstsq(self.e_vec,x.T,rcond=None)[0].T
     
     def fit_transform(self, X:np.array, k:int) -> np.array:
         '''Combination of methods fit and transform'''
@@ -117,7 +117,7 @@ class ClusteringKMeans(Predictor):
         self.pca = DimensionalityReduction()
         x = self.pca.fit_transform(X,self.k_dimensions)
         
-        kmeans = KMeans(n_clusters=self.n_clusters)
+        kmeans = KMeans(n_clusters=self.n_clusters, random_state=0,n_init=10)
         kmeans.fit(x)
         self._inertia = kmeans.inertia_
         self._centroids = kmeans.cluster_centers_.T
