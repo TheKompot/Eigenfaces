@@ -63,6 +63,9 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 
 This algorithm is broadly known as **PCA**(Principle Component Analyses).
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
+
+## Data
+*   Data for testing PCA and ML algorithms acquired from: https://github.com/microsoft/DigiFace1M
 ## Clustering and Classfication
 talk about:
 *   in which process of clustering and classfication do we use PCA
