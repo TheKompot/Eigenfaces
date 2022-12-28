@@ -7,7 +7,10 @@ Semester project for class Principles of Data Science
  To make an effective face recognition algorithm, we want to reduce the dimension of our dataset. We will use the $k$ largest eigenvectors (meaning eigenvectors with the largest eigenvalues) from our datasets covariance matrix to encode our dataset in to a matrix $\Omega$ with the shape of $m$ x $k$.
 
  First we center our dataset by subtracking the mean:
- $ a_i =  x_i - \mu $ , where  $\mu = \frac{1}{m} \sum_{i=1}^m x_i $
+ $ a_i =  x_i - \mu $ , where  
+ ```math
+ $\mu = \frac{1}{m} \sum_{i=1}^m x_i $
+ ```
  From that we get a new matrix $A$: 
 ```math
 A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
@@ -17,7 +20,7 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  A^TAv_i = \lambda v_i \\
 
  AA^TAv_i = \lambda A v_i \\
- 
+
  Cu_i = \lambda u_i
  ```
  where $C = AA^T$ (real covariance matrix) and $u_i = Av_i$, which is the relationship between the eigenvectors of $AA^T$ and $A^TA$.
