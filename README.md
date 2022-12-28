@@ -15,7 +15,7 @@ Semester project for class **Principles of Data Science**
 ```math
 A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 ```
- with the shape of $N^2$ x $m$. The covariance matrix of $A$ is $AA^T$, which has $N^2$ eigenvectors of size $N^2$. To reduce the computation power needed, we will compute the eigenvectors of matrix $A^TA$, which has only $m$ eigenvectors of size $m$ and then convert them in to  eigenvectors of matrix $AA^T$, using:
+ with the shape of $N^2$ x $m$. The covariance matrix of $A$ is $AA^T$, which has $N^2$ eigenvectors of size $N^2$. To reduce the computation power needed, we will compute the eigenvectors of the smaller covariance matrix $A^TA$, which has only $m$ eigenvectors of size $m$ and then convert them in to eigenvectors of matrix $AA^T$, using:
  ```math
  A^TAv_i = \lambda v_i
  ```
@@ -25,7 +25,7 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 ```math
  Cu_i = \lambda u_i
  ```
- where $C = AA^T$ (real covariance matrix) and $u_i = Av_i$, which is the relationship between the eigenvectors of $AA^T$ and $A^TA$.
+ where $C = AA^T$ (larger covariance matrix) and $u_i = Av_i$, which is the relationship between the eigenvectors of $AA^T$ and $A^TA$.
 
  Now we compute the eigenvectors of $A^TA$, take those with the $k$ largest eigenvalues, convert them in to the eigenvectors of $AA^T$ and create a matrix $U$:
   ```math
@@ -60,6 +60,8 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 \end{bmatrix}
  ```
  with the shape of $m$ x $k$. Now everytime we want to transform pictures we only need the mean vector $\mu$ and the eigenmatrix $U$ to get the transformed matrix of $\Omega_{new}$ with only $k$ dimensions.
+
+This algorithm is broadly known as **PCA**(Principle Component Analyses)
 
 ## Clustering and Classfication
 talk about:
