@@ -1,5 +1,5 @@
 # Eigenfaces
-Semester project for class Principles of Data Science
+Semester project for class **Principles of Data Science**
 
 ## Dimension reduction
  When we convert our images to vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be ineffective and troublesome to compute.
@@ -60,3 +60,9 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 \end{bmatrix}
  ```
  with the shape of $m$ x $k$. Now everytime we want to transform pictures we only need the mean vector $\mu$ and the eigenmatrix $U$ to get the transformed matrix of $\Omega_{new}$ with only $k$ dimensions.
+
+## Clustering and Classfication
+talk about:
+*   in which process of clustering and classfication do we use PCA
+* what supervised and unsupervised algorithms did we try
+* compare their stats 
