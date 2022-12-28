@@ -61,7 +61,7 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  ```
  with the shape of $m$ x $k$. Now everytime we want to transform pictures we only need the mean vector $\mu$ and the eigenmatrix $U$ to get the transformed matrix of $\Omega_{new}$ with only $k$ dimensions.
 
-This algorithm is broadly known as **PCA**(Principle Component Analyses)
+This algorithm is broadly known as **PCA**(Principle Component Analyses).
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
 ## Clustering and Classfication
 talk about:
