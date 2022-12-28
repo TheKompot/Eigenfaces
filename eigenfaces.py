@@ -207,7 +207,7 @@ class CentroidClassifier(Predictor):
         self._centroids = np.array(centroids).T # save them as matrix, where columns are centroids
     
     def predict(self, x:np.array) -> np.array:
-        '''Uses PCA, input data and list of existing labels to predict specific labels'''
+        '''Uses PCA, input data and list of existing labels to predict future labels'''
         x = self.pca.transform(x)
         x = super().predict(x)
 
