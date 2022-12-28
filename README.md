@@ -29,18 +29,17 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
   ```math
  U = \begin{bmatrix}
     u_1 & u_2 & ... & u_k
- \end{bmatrix}]
+ \end{bmatrix}
  ```
  which has the shape of $N^2$ x $k$.
 
  To get our matrix $\Omega$ we need to calculate the coeficients $w_1$ ... $w_k$ of the linear combination of eigenvectors that comprise vector $a_i$. To do that we compute with the method of least squares the system of equations:
- ```math
- a_{i1} = w_{i1} u_{11} + w_{i2} u_{21} + ... + w_{ik} u_{k1} \\
+
+ $$a_{i1} = w_{i1} u_{11} + w_{i2} u_{21} + ... + w_{ik} u_{k1} \\
  a_{i2} = w_{i1} u_{12} + w_{i2} u_{22} + ... + w_{ik} u_{k2} \\
  ... \\
- a_{in^2} = w_{i1} u_{1n^2} + w_{i2} u_{2n^2} + ... + w_{ik} u_{kn^2}
- ```
- For $ i = {1,2 ... , m}$. We will not show you how to solve these equations, to stop boring you with basic algebra. When we get the vectors $w_1, w_2, ... , w_m$ we get the final matrix $\Omega$:
+ a_{in^2} = w_{i1} u_{1n^2} + w_{i2} u_{2n^2} + ... + w_{ik} u_{kn^2}$$
+ For $i = {1,2 ... , m}$. We will not show you how to solve these equations, to stop boring you with basic algebra. When we get the vectors $w_1, w_2, ... , w_m$ we get the final matrix $\Omega$:
  ```math
 \Omega =
 \begin{bmatrix}
