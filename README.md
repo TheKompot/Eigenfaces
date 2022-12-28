@@ -7,7 +7,7 @@ Semester project for class Principles of Data Science
  To make an effective face recognition algorithm, we want to reduce the dimension of our dataset. We will use the $k$ largest eigenvectors (meaning eigenvectors with the largest eigenvalues) from our datasets covariance matrix to encode our dataset in to a matrix $\Omega$ with the shape of $m$ x $k$.
 
  First we center our dataset by subtracking the mean:
- $ a_i =  x_i - \mu $ , where  
+ $a_i =  x_i - \mu$ , where  
  ```math
  \mu = \frac{1}{m} \sum_{i=1}^m x_i $
  ```
@@ -26,28 +26,28 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  where $C = AA^T$ (real covariance matrix) and $u_i = Av_i$, which is the relationship between the eigenvectors of $AA^T$ and $A^TA$.
 
  Now we compute the eigenvectors of $A^TA$, take those with the $k$ largest eigenvalues, convert them in to the eigenvectors of $AA^T$ and create a matrix $U$:
- $$
- U = \left[\begin{array}{cc}
+  ```math
+ U = \begin{bmatrix}
     u_1 & u_2 & ... & u_k
- \end{array}\right]
- $$
+ \end{bmatrix}]
+ ```
  which has the shape of $N^2$ x $k$.
 
  To get our matrix $\Omega$ we need to calculate the coeficients $w_1$ ... $w_k$ of the linear combination of eigenvectors that comprise vector $a_i$. To do that we compute with the method of least squares the system of equations:
- $$
+ ```math
  a_{i1} = w_{i1} u_{11} + w_{i2} u_{21} + ... + w_{ik} u_{k1} \\
  a_{i2} = w_{i1} u_{12} + w_{i2} u_{22} + ... + w_{ik} u_{k2} \\
  ... \\
  a_{in^2} = w_{i1} u_{1n^2} + w_{i2} u_{2n^2} + ... + w_{ik} u_{kn^2}
- $$
+ ```
  For $ i = {1,2 ... , m}$. We will not show you how to solve these equations, to stop boring you with basic algebra. When we get the vectors $w_1, w_2, ... , w_m$ we get the final matrix $\Omega$:
- $$
+ ```math
 \Omega =
-\left[\begin{array}{cc}
+\begin{bmatrix}
 \_\_\_ &w_1^T & \_\_\_ \\
 \_\_\_ & w_2^T & \_\_\_ \\
  & ... & \\
 \_\_\_ & w_m^T & \_\_\_
-\end{array}\right]
- $$
+\end{bmatrix}
+ ```
  with the shape of $m$ x $k$. Now everytime we want to transform pictures we only need the mean vector $\mu$ and the eigenmatrix $U$ to get the transformed matrix of $\Omega_{new}$ with only $k$ dimensions.
