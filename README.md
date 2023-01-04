@@ -80,10 +80,10 @@ In order for the PCA algorithm to work properly, we need to pre-process the inpu
 
 ### Face positioning
 The face which we wish to input into the algorithm can be rotated and positioned anywhere in the original image. 
-Sadly, without advanced image reconstruction algorithms we cannot change a profile view into a full face view. The information is simply just not in the image and any attempt at its reconstruction would be only guesswork. As the images we are using seems to have been taken by a professional photographer rather than random images uploaded by each person, the images should contain no profile views. 
+Sadly, without advanced image reconstruction algorithms we cannot change a profile view into a full face view. The information is simply just not in the image and any attempt at its reconstruction would be only guesswork. As the images we are using seem to have been taken by a professional photographer rather than random images uploaded by each person, the images should contain no profile views. 
 - [ ] ❓talk about three quarter view in the results (not completely frontal faces), if they have been grouped together
 
-Some captured faces, however, are almost in a so called three quarter view. The influence of this fact has been documented in the results section. **TODO reference**
+Some captured faces, however, are almost in a so called three quarter view. The influence of this fact has been documented in the results section. **❗TODO reference**
 Though we cannot rotate the person post-capture around their vertical axis, we can extract the smaller area containing their face from the image and rotate it, so that the main features of the face are uniformly positioned in all our images.
 #### Face and eye detection
 Face or eye detection is a common computer vision task. For this purpose, we used the [Haar feature-based cascade classifiers](https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html) with cascade files contained in the OpenCV library.
@@ -97,8 +97,12 @@ Then we find the angle by which we need to rotate the image and then rotate the 
 
 ![Untitled](https://user-images.githubusercontent.com/96919296/210486582-23931632-0e72-4b23-8637-e9788c48dc89.png)
 
-So far, we have just aligned the face. The only thing left is to extract the face. This is, again, done with the help of a Haar cascade classifier.
+So far, we have just aligned the face. The only thing left is to extract the face. This is, again, done with the help of a Haar cascade classifier. Here is shown an example of a result image we get after this procedure:
+
+![kollareyesFinal](https://user-images.githubusercontent.com/96919296/210489738-db89397b-2020-442f-a75f-164fe0f95b44.jpg)
 
 ### Size and brightness
 These two parameters are quite easy to unify. Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
-As for brightness, we decided to use equalisation of the histogram technique. This helps with unifying the brightness of the images, as well enhances the images contrast.
+As for brightness, we decided to use equalisation of the histogram technique. This helps with unifying the brightness of the images, as well enhances the images contrast. Such alteration yealds:
+
+![kollareyesFinal2](https://user-images.githubusercontent.com/96919296/210489796-d224f7b3-c85b-470c-bdae-aeaf1a631e4b.jpg)
