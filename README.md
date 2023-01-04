@@ -95,14 +95,16 @@ First, we locate the centres of the eyes with the use of Haar cascade classifier
 
 Then we find the angle by which we need to rotate the image and then rotate the image around the middle point between the eyes. 
 
-![Untitled](https://user-images.githubusercontent.com/96919296/210486582-23931632-0e72-4b23-8637-e9788c48dc89.png)
+![Untitled1](https://user-images.githubusercontent.com/96919296/210490253-8011d2e7-6ac8-4d20-921b-fc66e173ada5.png)
 
 So far, we have just aligned the face. The only thing left is to extract the face. This is, again, done with the help of a Haar cascade classifier. Here is shown an example of a result image we get after this procedure:
 
-![kollareyesFinal](https://user-images.githubusercontent.com/96919296/210489738-db89397b-2020-442f-a75f-164fe0f95b44.jpg)
+![kollareyesFinal](https://user-images.githubusercontent.com/96919296/210490239-282d08f6-97ec-4fab-9d1b-76318b826810.jpg)
 
 ### Size and brightness
 These two parameters are quite easy to unify. Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
 As for brightness, we decided to use equalisation of the histogram technique. This helps with unifying the brightness of the images, as well enhances the images contrast. Such alteration yealds:
 
 ![kollareyesFinal2](https://user-images.githubusercontent.com/96919296/210489796-d224f7b3-c85b-470c-bdae-aeaf1a631e4b.jpg)
+
+(this image is 200x200 for viewing purposes)
