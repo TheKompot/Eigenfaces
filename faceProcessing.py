@@ -2,6 +2,7 @@ import cv2 as cv  # opencv library
 import numpy as np
 from math import atan, degrees
 from urllib.request import urlopen
+from urllib.request import Request
 from urllib.error import URLError
 
 
@@ -18,7 +19,7 @@ face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv.CascadeClassifier('haarcascade_eye.xml')
 
 
-def detectFace(image, returnCutOut=True):
+def detect_face(image, return_cut_out=True):
     """
      locate (the largest) frontal face in the image
     :param image: image in the numpy matrix format (most preferably openCV formats, either a grayscale or BGR)
@@ -39,7 +40,7 @@ def detectFace(image, returnCutOut=True):
     x, y, w, h = faces[0]
 
     # if we wish to return the image of the face
-    if returnCutOut:
+    if return_cut_out:
         # cut out the face and return it
         return image[y:y+h, x:x+w]
 
@@ -47,25 +48,25 @@ def detectFace(image, returnCutOut=True):
     return x, y, w, h
 
 
-def alignFace(image):
+def align_face(image):
     """
     extract an aligned face from the image
     :param image: source image
     :return: image of the largest aligned face from the image
     """
     # get the location and size of the largest face
-    x, y, w, h = detectFace(image, False)
+    x, y, w, h = detect_face(image, False)
 
     # find two largest eyes inside the faces boundaries
-    eyeL, eyeR = findEyes(image, x, x+w, y, y+h)
+    eyeL, eyeR = find_eyes(image, x, x+w, y, y+h)
 
     # return the cut out of the face from the image rotated so that the eye's centres are on a horizontal line
-    return detectFace(rotate(image,
+    return detect_face(rotate(image,
                              degrees(atan((eyeR[1] - eyeL[1]) / (eyeR[0] - eyeL[0]))),
                              ((eyeR[0] + eyeL[0]) / 2, (eyeR[1] + eyeL[1]) / 2)))
 
 
-def findEyes(image, minX, maxX, minY, maxY):
+def find_eyes(image, minX, maxX, minY, maxY):
     """
     find two largest eyes in the area bound by the (min|max)[XY] parameters
     :param image: source image
@@ -112,7 +113,7 @@ def rotate(image, angle, point):
     return cv.warpAffine(image, cv.getRotationMatrix2D(point, angle, 1), (h, w))
 
 
-def fetchImage(url, mode=cv.IMREAD_GRAYSCALE):
+def fetch_image(url, mode=cv.IMREAD_GRAYSCALE):
     """
     loads image from the url
     :param url: source of the image
@@ -121,7 +122,10 @@ def fetchImage(url, mode=cv.IMREAD_GRAYSCALE):
     """
     # download the image, convert it to a numpy array, and then read
     # it into openCV format
-    resp = urlopen(url)
+    user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'
+    headers={'User-Agent':user_agent,} 
+    request= Request(url,None,headers)
+    resp = urlopen(request)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     image = cv.imdecode(image, mode)
 
@@ -140,7 +144,7 @@ def resize(image, width, height):
     return cv.resize(image, (width, height), interpolation=cv.INTER_AREA)
 
 
-def createVectorAndMatrixFromListOfURLs(baseURL, listOfExtensions, widthOfImage=100, heightOfImage=100):
+def create_vector_and_matrix(base_URL, list_of_extensions, width_of_image=100, height_of_image=100):
     """
     :param baseURL: baseURL string
     :param listOfExtensions: iterable of extensions
@@ -154,44 +158,45 @@ def createVectorAndMatrixFromListOfURLs(baseURL, listOfExtensions, widthOfImage=
     mode = cv.IMREAD_GRAYSCALE
 
     # create a list for working extensions and loaded images
-    workingExtensions = []
+    working_extensions = []
     images = []
 
     # loop through all the extensions and gather the images
-    for extension in listOfExtensions:
+    for extension in list_of_extensions:
         try:
             # load the image from the URL
-            image = fetchImage(baseURL + extension, mode)
+            image = fetch_image(base_URL + extension, mode)
             images.append(image)
 
             # add the extension to the list of working extensions
-            workingExtensions.append(extension)
+            working_extensions.append(extension)
         except URLError:
             # if the image could not be loaded, we ignore the extension
             # the reasons for not being able to lead the image are:
             #   no image to load, connection timeout, ...
+            #print(base_URL + extension)
             pass
 
     # check that the number of gathered images is the same as the number of extensions deemed working
-    assert len(workingExtensions) == len(images)
+    assert len(working_extensions) == len(images)
 
     # initiate lists for images that a face could be found in
-    alignedExtensions = []
-    alignedImages = []
+    aligned_extensions = []
+    aligned_images = []
 
     # loop through the images we have gathered and extract the aligned faces
     for i, image in enumerate(images):
         try:
             # extract the face
-            alignedImages.append(resize(alignFace(image), widthOfImage, heightOfImage).flatten())
+            aligned_images.append(resize(align_face(image), width_of_image, height_of_image).flatten())
 
             # save the extension associated with the image
-            alignedExtensions.append(workingExtensions[i])
+            aligned_extensions.append(working_extensions[i])
         except FaceCouldNotBeAligned:
             # if the face could not be aligned, we ignore the image
             pass
 
     # check that the number of remaining images is the same as the number of extensions associated with them
-    assert len(alignedExtensions) == len(alignedImages)
+    assert len(aligned_extensions) == len(aligned_images)
 
-    return np.array(alignedExtensions), np.array(alignedImages)
+    return np.array(aligned_extensions), np.array(aligned_images)
