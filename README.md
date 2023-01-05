@@ -66,6 +66,8 @@ Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pc
 
 ## Data
 *   Data for testing PCA and ML algorithms acquired from: https://github.com/microsoft/DigiFace1M
+*   Faces for analysis and classification were scraped from personal websites from individual departments here: https://fmph.uniba.sk/pracoviska/
+*   Web scraping was carried out using Python libraries requests (https://requests.readthedocs.io/en/latest/) and beautifulsoup4 (https://pypi.org/project/beautifulsoup4/)
 ## Clustering and Classfication
 talk about:
 *   in which process of clustering and classfication do we use PCA
