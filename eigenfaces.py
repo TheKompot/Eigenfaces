@@ -2,19 +2,19 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 class NotFittedError(Exception):
-    ''' Raised when model is asked to do something(e.g. predict) before it was fitted '''
+    ''' Raised when model is asked to do something (e.g. predict) before it was fitted '''
     pass
 
 class DimensionalityReduction:
-    '''reduces dimension of a matrix by finding its eigenvectors.
-     Ouput dimension can be from range [1, MIN(M,N)], where M and N are 
+    ''' Reduces dimension of a matrix by finding its eigenvectors.
+     Output dimension can be from range [1, MIN(M,N)], where M and N are 
      the dimensions of input matrix'''
 
     def __init__(self):
         self.e_vec = None
 
     def fit(self,X:np.array, k:int):
-        ''' finds k biggests eigenvectors of matrix X for further calculations (e.g. transform)
+        ''' finds k biggest eigenvectors of matrix X for further calculations (e.g. transform)
         
         INPUT:
         ------
@@ -29,10 +29,10 @@ class DimensionalityReduction:
 
         X = X - self.avg_vector.T # normalized images to the center
 
-        #eigenvalues and eigenvectors for m x m cov matrix
+        # eigenvalues and eigenvectors for m x m cov matrix
         e_val, e_vec = np.linalg.eig(X.T@X)
 
-        #eigenvectors for n^2 x n^2 cov matrix
+        # eigenvectors for n^2 x n^2 cov matrix
         e_vec = X@e_vec
 
         # selecting k biggest eigenvectors
@@ -55,7 +55,7 @@ class DimensionalityReduction:
         '''
 
         if self.e_vec is None:
-            raise NotFittedError("Needs to be first fitted to the trainning data")
+            raise NotFittedError("Needs to be first fitted to the training data")
 
         # centering the data
         x = x - self.avg_vector
@@ -71,32 +71,32 @@ class DimensionalityReduction:
 
 class Predictor:
     '''Abstract class for further models, needs attribute '_centroids' 
-    to be defines and of shape number_of_rows_in_x x number_of_centroids'''
+    to be defined and of shape number_of_rows_in_x x number_of_centroids'''
 
     def predict(self, x:np.array) -> np.array:
         '''To all rows of 'x' the method finds the closest centroid and
          returns a vector with the indexes of the closest cetroid'''
         if self._centroids is None:
-            raise NotFittedError('Needs to be first fitted to the trainning data')
+            raise NotFittedError('Needs to be first fitted to the training data')
         
         output = []
 
-        for i in range(x.shape[0]): # itter through all rows/pictures
+        for i in range(x.shape[0]): # iter through all rows/pictures
             vec = x[i,:]
 
             # finding the closest cetroid and its labels
             label = None
             smallest_dist = None
 
-            for j in range(self._centroids.shape[1]):  # itter through columns/centroids
+            for j in range(self._centroids.shape[1]):  # iter through columns/centroids
                 cluster = self._centroids[:,j]
                 
                 dist = np.linalg.norm(vec - cluster)    # calculatiing euclidean distance FREE FOR EXPERIMENTATION
 
-                if label is None or dist < smallest_dist: # if no label set or this centorid is the closes -> set new label
+                if label is None or dist < smallest_dist: # if no label set or this centorid is the closest -> set new label
                     label = j
                     smallest_dist = dist
-            output.append(label)                        # after cheching all centroids, mark the label of the best one
+            output.append(label)                        # after checking all centroids, mark the label of the best one
         return np.array(output)                         # shape (number_of_rows_in_x,)
 
     def fit(self, X:np.array):
@@ -118,7 +118,7 @@ class ClusteringEig(Predictor):
         
 class ClusteringKMeans(Predictor):
     '''Class for clustering that first puts data in to a lower dimension k
-    then uses kmeans algorithm for computing centroids
+    then uses KMeans algorithm for computing centroids
     
     Attributes:
     ----------
@@ -148,18 +148,18 @@ class ClusteringKMeans(Predictor):
         self.pca = DimensionalityReduction()
         x = self.pca.fit_transform(X,self.k_dimensions) # getting data from lower dimension
         
-        kmeans = KMeans(n_clusters=self.n_clusters, random_state=0,n_init=10) # applying KMeans in loweer dimension
+        kmeans = KMeans(n_clusters=self.n_clusters, random_state=0,n_init=10) # applying KMeans in lower dimension
         kmeans.fit(x)                            # fitting model, euclidean distance used FREE FOR EXPERIMENTATION
-        self._inertia = kmeans.inertia_          # saving the kmeans error
-        self._centroids = kmeans.cluster_centers_.T # saving the centroids calculated by kmeans
+        self._inertia = kmeans.inertia_          # saving the KMeans error
+        self._centroids = kmeans.cluster_centers_.T # saving the centroids calculated by KMeans
     
     def predict(self,x:np.array) -> np.array:
-        ''' Transformes data in to lower dimension that predicts its label, returns vector of labels'''
+        ''' Transforms data in to lower dimension that predicts its label, returns vector of labels'''
         x = self.pca.transform(x)
         return super().predict(x)
 
 class MemoryClassifier(Predictor):
-    '''Classifier that transformes input data in to lower dimensions and remembers every point in training data and
+    '''Classifier that transforms input data in to lower dimensions and remembers every point in training data and
     classifies a new data point according to what point from the training set is the closest'''
 
     def __init__(self,k_dimensions:int):
@@ -194,14 +194,14 @@ class CentroidClassifier(Predictor):
         vec_in_labels = {}      # dict, key is label, value is a list of data points (numpy arays)
         self.labels = []        # list of labels
 
-        for i in range(X.shape[0]):  # itter through rows
+        for i in range(X.shape[0]):  # iter through rows
             if y[i] not in vec_in_labels:   # add label to dict and list
                 vec_in_labels[y[i]] = []
                 self.labels.append(y[i])
             vec_in_labels[y[i]].append(X[i,:]) # append data point to its label
         
         centroids = []          # temp list for calculating centroids
-        for i in self.labels:   # itter through all labels
+        for i in self.labels:   # iter through all labels
             arr = np.array(vec_in_labels[i])    # change list of vectors to matrix
             centroids.append(np.mean(arr,axis=0)) # append the mean vector
         self._centroids = np.array(centroids).T # save them as matrix, where columns are centroids
