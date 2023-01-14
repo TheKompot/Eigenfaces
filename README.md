@@ -1,6 +1,9 @@
 # Eigenfaces
 Semester project for class **Principles of Data Science**
 
+## Overview
+This project is focused on using Principal Component Analysis (PCA) on photos. We are comparing build-in PCA algorithm in Python library scikit.learn with our own implementation. Using PCA algorithm and three different clustering methods we are trying to find groups of teachers at our faculty who look alike. We are also curious about which of our teachers look alike famous mathematicians (e.g. Gauss, Neumann, Turing, Einstein,...). 
+
 ## Dimension reduction
  When we convert our images to vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be ineffective and troublesome to compute.
 
