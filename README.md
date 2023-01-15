@@ -2,12 +2,21 @@
 Semester project for class **Principles of Data Science**
 
 ## Overview
-This project is focused on using Principal Component Analysis (PCA) on photos. We are comparing build-in PCA algorithm in Python library scikit.learn with our own implementation. Using PCA algorithm and three different clustering methods we are trying to find groups of teachers at our faculty who look alike. We are also curious about which of our teachers look alike famous mathematicians (e.g. Gauss, Neumann, Turing, Einstein,...). 
+This project is focused on using Principal Component Analysis (PCA) on photos. We are implementing PCA algorithm using `numpy` library in Python and comparing it with  build-in PCA algorithm in `scikit.learn` (https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html). Using PCA algorithm and three different clustering methods we are trying to find groups of teachers at our faculty who look alike. We are also curious about which of our teachers look alike famous mathematicians (e.g. Gauss, Neumann, Turing, Einstein, ...). 
 
-## Dimension reduction
- When we convert our images to vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be ineffective and troublesome to compute.
+## Data
+*   Testing PCA and ML algorithms is done on synthetic face images acquired from: https://github.com/microsoft/DigiFace1M
+*   Faces for analysis and classification were scraped from personal websites from individual departments here: https://fmph.uniba.sk/pracoviska/
 
- To make an effective face recognition algorithm, we want to reduce the dimension of our dataset. We will use the $k$ largest eigenvectors (meaning eigenvectors with the largest eigenvalues) from our datasets covariance matrix to encode our dataset in to a matrix $\Omega$ with the shape of $m$ x $k$.
+Web scraping was carried out using Python libraries `requests` (https://requests.readthedocs.io/en/latest/) and `beautifulsoup4` (https://pypi.org/project/beautifulsoup4/)
+
+##
+*First let's look at PCA algorithm.*
+
+## PCA
+PCA is technique used for dimensionality reduction. When we have a dataset of $m$ face images of size $N$ x $N$ and we want to convert them into vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be inefficient and troublesome to compute.
+
+To make an efficient face recognition algorithm, we want to reduce the dimension of our dataset. We will use the $k$ largest eigenvectors (meaning eigenvectors with the largest eigenvalues) from covariance matrix of our dataset to encode the dataset into a matrix $\Omega$ with the shape of $m$ x $k$.
 
  First we center our dataset by subtracking the mean:
  $a_i =  x_i - \mu$ , where  
@@ -18,7 +27,7 @@ This project is focused on using Principal Component Analysis (PCA) on photos. W
 ```math
 A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
 ```
- with the shape of $N^2$ x $m$. The covariance matrix of $A$ is $AA^T$, which has $N^2$ eigenvectors of size $N^2$. To reduce the computation power needed, we will compute the eigenvectors of the smaller covariance matrix $A^TA$, which has only $m$ eigenvectors of size $m$ and then convert them in to eigenvectors of matrix $AA^T$, using:
+ with the shape of $N^2$ x $m$. The covariance matrix of $A$ is $AA^T$, which has $N^2$ eigenvectors of size $N^2$. To reduce the computation power needed, we will compute the eigenvectors of the smaller covariance matrix $A^TA$, which has only $m$ eigenvectors of size $m$ and then convert them into eigenvectors of matrix $AA^T$, using:
  ```math
  A^TAv_i = \lambda v_i
  ```
@@ -30,7 +39,7 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  ```
  where $C = AA^T$ (larger covariance matrix) and $u_i = Av_i$, which is the relationship between the eigenvectors of $AA^T$ and $A^TA$.
 
- Now we compute the eigenvectors of $A^TA$, take those with the $k$ largest eigenvalues, convert them in to the eigenvectors of $AA^T$ and create a matrix $U$:
+ Now we compute the eigenvectors of $A^TA$, take those with the $k$ largest eigenvalues, convert them into the eigenvectors of $AA^T$ and create a matrix $U$:
   ```math
  U = \begin{bmatrix}
     u_1 & u_2 & ... & u_k
@@ -38,7 +47,7 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  ```
  which has the shape of $N^2$ x $k$.
 
- To get our matrix $\Omega$ we need to calculate the coeficients $w_1$ ... $w_k$ of the linear combination of eigenvectors that comprise vector $a_i$. To do that we compute with the method of least squares the system of equations:
+ To get our matrix $\Omega$ we need to calculate the coefficients $w_1$ ... $w_k$ of the linear combination of eigenvectors that comprise vector $a_i$. To do that, we compute the following system of equations using the least squares method:
 ```math
  a_{i1} = w_{i1} u_{11} + w_{i2} u_{21} + ... + w_{ik} u_{k1}
  ```
@@ -52,7 +61,9 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  a_{in^2} = w_{i1} u_{1n^2} + w_{i2} u_{2n^2} + ... + w_{ik} u_{kn^2}
  ```
 
- For $i = {1,2 ... , m}$. We will not show you how to solve these equations, to stop boring you with basic algebra. When we get the vectors $w_1, w_2, ... , w_m$ we get the final matrix $\Omega$:
+for $i = {1,2 ... , m}$. 
+
+We will not show you how to solve these equations, to stop boring you with basic algebra. When we get the vectors $w_1, w_2, ... , w_m$, we get the final matrix $\Omega$:
  ```math
 \Omega =
 \begin{bmatrix}
@@ -64,13 +75,8 @@ A = \begin{bmatrix}a_1 & a_2 & ... & a_m\end{bmatrix}
  ```
  with the shape of $m$ x $k$. Now everytime we want to transform pictures we only need the mean vector $\mu$ and the eigenmatrix $U$ to get the transformed matrix of $\Omega_{new}$ with only $k$ dimensions.
 
-This algorithm is broadly known as **PCA**(Principle Component Analysis).
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
 
-## Data
-*   Data for testing PCA and ML algorithms acquired from: https://github.com/microsoft/DigiFace1M
-*   Faces for analysis and classification were scraped from personal websites from individual departments here: https://fmph.uniba.sk/pracoviska/
-*   Web scraping was carried out using Python libraries requests (https://requests.readthedocs.io/en/latest/) and beautifulsoup4 (https://pypi.org/project/beautifulsoup4/)
 ## Clustering and Classfication
 talk about:
 *   in which process of clustering and classfication do we use PCA
