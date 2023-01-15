@@ -2,7 +2,7 @@
 Semester project for class **Principles of Data Science**
 
 ## Overview
-This project is focused on using Principal Component Analysis (PCA) on photos. We are implementing PCA algorithm using `numpy` library in Python and comparing it with  build-in PCA algorithm in `scikit.learn` (https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html). Using PCA algorithm and three different clustering methods we are trying to find groups of teachers at our faculty who look alike. We are also curious about which of our teachers look alike famous mathematicians (e.g. Gauss, Neumann, Turing, Einstein, ...). 
+This project is focused on using Principal Component Analysis (PCA) on photos. We are implementing PCA algorithm using `numpy` library in Python and comparing it with  build-in [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html) algorithm in `scikit.learn`. Using PCA algorithm and three different clustering methods ([K-means](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) from `scikit.learn`, our own implemantation of K-means and [Gaussian Mixture algorithm](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html) also from `scikit.learn`) we are trying to find groups of teachers at our faculty who look alike. We are also curious about which of our teachers look alike famous mathematicians (e.g. Gauss, Neumann, Turing, Einstein, ...). 
 
 ## Data
 *   Testing PCA and ML algorithms is done on synthetic face images acquired from: https://github.com/microsoft/DigiFace1M
@@ -77,14 +77,11 @@ We will not show you how to solve these equations, to stop boring you with basic
 
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
 
-## Clustering and Classfication
-talk about:
-*   in which process of clustering and classfication do we use PCA
-* what supervised and unsupervised algorithms did we try
-* compare their stats 
+##
+*In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format.*
 
 ## Image pre-processing
-In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format. All input images need to:
+All input images need to:
 * contain only one face in a specified *position*
 * have the same *size*
 * have their *brightness* adjusted
@@ -92,12 +89,13 @@ In order for the PCA algorithm to work properly, we need to pre-process the inpu
 ### Face positioning
 The face which we wish to input into the algorithm can be rotated and positioned anywhere in the original image. 
 Sadly, without advanced image reconstruction algorithms we cannot change a profile view into a full face view. The information is simply just not in the image and any attempt at its reconstruction would be only guesswork. As the images we are using seem to have been taken by a professional photographer rather than random images uploaded by each person, the images should contain no profile views. 
-- [ ] ❓talk about three quarter view in the results (not completely frontal faces), if they have been grouped together
 
-Some captured faces, however, are almost in a so called three quarter view. The influence of this fact has been documented in the results section. **❗TODO reference**
+Some captured faces, however, are almost in a so called three quarter view (not completely frontal faces). The influence of this fact has been documented in the [results section](#results).
 Though we cannot rotate the person post-capture around their vertical axis, we can extract the smaller area containing their face from the image and rotate it, so that the main features of the face are uniformly positioned in all our images.
+
 #### Face and eye detection
-Face or eye detection is a common computer vision task. For this purpose, we used the [Haar feature-based cascade classifiers](https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html) with cascade files contained in the OpenCV library.
+Face or eye detection is a common computer vision task. For this purpose, we used the [Haar feature-based cascade classifiers](https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html) with cascade files contained in the `OpenCV` library.
+
 #### Face alignment
 To deal with the rotation of the face, we use the position of the eyes in the picture to correct the rotation. To align the face, we find the eyes in the face and rotate the image, so that the eyes are on a horizontal line.
 First, we locate the centres of the eyes with the use of Haar cascade classifiers. 
@@ -119,3 +117,12 @@ As for brightness, we decided to use equalisation of the histogram technique. Th
 ![kollareyesFinal2](https://user-images.githubusercontent.com/96919296/210489796-d224f7b3-c85b-470c-bdae-aeaf1a631e4b.jpg)
 
 (this image is 200x200 for viewing purposes)
+
+## Clustering and Classfication
+talk about:
+*   in which process of clustering and classfication do we use PCA
+* what supervised and unsupervised algorithms did we try
+* compare their stats 
+
+## Results
+- [ ] ❓talk about three quarter view in the results (not completely frontal faces), if they have been grouped together
