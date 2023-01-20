@@ -84,7 +84,6 @@ In order for the PCA algorithm to work properly, we need to pre-process the inpu
 All input images need to:
 * contain only one face in a specified *position*
 * have the same *size*
-* have their *brightness* adjusted
 
 ### Face positioning
 The face which we wish to input into the algorithm can be rotated and positioned anywhere in the original image. 
@@ -110,13 +109,17 @@ So far, we have just aligned the face. The only thing left is to extract the fac
 
 ![kollareyesFinal](https://user-images.githubusercontent.com/96919296/210490239-282d08f6-97ec-4fab-9d1b-76318b826810.jpg)
 
-### Size and brightness
-These two parameters are quite easy to unify. Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
-As for brightness, we decided to use equalisation of the histogram technique. This helps with unifying the brightness of the images, as well enhances the images contrast. Such alteration yealds:
+#### Size
+Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
+
+#### Brightness 
+Brightness seems to have a great impact on the results. To mitigate this effect, we tried using the equalisation of the histogram technique. In theory, this helps with unifying the brightness of the images as well enhances the image's contrast. Such alteration yealds:
 
 ![kollareyesFinal2](https://user-images.githubusercontent.com/96919296/210489796-d224f7b3-c85b-470c-bdae-aeaf1a631e4b.jpg)
 
-(this image is 200x200 for viewing purposes)
+Sadly, the overall results did not benefit from this. The various backgrounds and other differences such as lighting influenced the final image. This technique highlited them instead of removing them.
+
+In the end, we deciced not to change the brightness at all.
 
 
 ## 
