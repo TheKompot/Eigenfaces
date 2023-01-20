@@ -11,7 +11,7 @@ This project is focused on using Principal Component Analysis (PCA) on photos. W
 Web scraping was carried out using Python libraries `requests` (https://requests.readthedocs.io/en/latest/) and `beautifulsoup4` (https://pypi.org/project/beautifulsoup4/)
 
 ##
-*First let's look at PCA algorithm.*
+First let's look at PCA algorithm.
 
 ## PCA
 PCA is technique used for dimensionality reduction. When we have a dataset of $m$ face images of size $N$ x $N$ and we want to convert them into vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be inefficient and troublesome to compute.
@@ -78,7 +78,7 @@ We will not show you how to solve these equations, to stop boring you with basic
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
 
 ##
-*In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format.*
+In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format.
 
 ## Image pre-processing
 All input images need to:
@@ -118,14 +118,15 @@ As for brightness, we decided to use equalisation of the histogram technique. Th
 
 (this image is 200x200 for viewing purposes)
 
-## Clustering and Classfication
 
-### Dimensionality Reduction
+## 
 After we scrape and pre-process our desired image set, we need to perfom dimensionality reduction. PCA reduces the complexity of high dimensional data, while preserving trends and patterns.
 PCA projects data into lower dimensions, by maximizing the variance of projected points (all must be uncorrelated). We achieved 95% variance using 75 components, however, the clustering seemed better
 when using just the first 15, at least for human perception of the faces.
 When comparing our own PCA algorithm with sklearn-imported one, the average face from both is completely identical, however, the feature faces (principal components) seem to have lightning swapped,
 but other than that, are identical as well.
+
+## Clustering and Classfication
 
 We used several images of famous mathematicians, namely Gauss, Neumann, Turing and Einstein and attempted to find person from our image dataset, that resembles each of the mathematicians the most. 
 We performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
@@ -146,7 +147,7 @@ Silhouette method measures how similar object is to its own cluster compared to 
 
 We tried different numbers of components, ranging from 2 to 75, but the best results seem to be produced when using the first 15, at least from general observation (eye method). Its hard to determine, whether there actually is an optimal amount of components, but some are definitely better than others.
 
-When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seens to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
+When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seems to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
 
 ![km vs gm](https://user-images.githubusercontent.com/93282067/213715627-21b6255a-398c-41ae-8635-9086b9654b3f.png)
 
