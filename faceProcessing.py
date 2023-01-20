@@ -189,7 +189,7 @@ def create_vector_and_matrix(base_URL, list_of_extensions, width_of_image=100, h
         try:
             # extract the face
             aligned_images.append(resize(align_face(image), width_of_image, height_of_image).flatten())
-
+            #aligned_images.append(cv.equalizeHist(resize(align_face(image), width_of_image, height_of_image)).flatten())
             # save the extension associated with the image
             aligned_extensions.append(working_extensions[i])
         except FaceCouldNotBeAligned:

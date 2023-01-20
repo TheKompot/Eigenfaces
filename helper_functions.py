@@ -36,3 +36,9 @@ def create_colors(labels, no_of_groups):
     for i in range(len(labels)):
         color_list.append(colors[labels[i]])
     return color_list
+
+
+
+def get_difference_image(image_1, image_2):
+    return image_1 - image_2
+    

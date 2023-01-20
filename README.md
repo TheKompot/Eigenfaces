@@ -119,10 +119,29 @@ As for brightness, we decided to use equalisation of the histogram technique. Th
 (this image is 200x200 for viewing purposes)
 
 ## Clustering and Classfication
-talk about:
-*   in which process of clustering and classfication do we use PCA
-* what supervised and unsupervised algorithms did we try
-* compare their stats 
+
+### Dimensionality Reduction
+After we scrape and pre-process our desired image set, we need to perfom dimensionality reduction. PCA reduces the complexity of high dimensionald data, while preserving trends and patterns.
+PCA projects data into lower dimensions, by maximizing the variance of projected points (all must be uncorrelated). We achieved 95% variance using about 75 components, however, the clustering seemed better
+when using just 15, at least for human perception of the faces.
+When comparing our own PCA algorithm with sklearn-imported one, the average face from both is completely identical, however, the feature faces (principal components) seem to have lightning swapped,
+but other than that, are identical as well.
+
+### Clustering Algorithms and Tuning
+We tried 2 unsupervised algorithms, K-Means and Gaussian Mixture. We did not use any supervised methods, since we did not work with any labeled data. We basically had only two parameters for tuning:
+* Number of components
+* Number of clusters
+
+We can easily determine the optimal number of clusters using either the silhouette score, or elbow method. Silhouette score is easier to use, since it basically just boils down to getting the index of a maximum number from a list of numbers.
+Elbow method plots the explained variation and we just have to look at a point where diminishing returns are no longer worth the additional cost.
+Silhouette method measures how similar object is to its own cluster compared to other clusters (using Euclidean distance).
+
+We tried different numbers of components, ranging from 2 to 75, but the best results seem to be produced when using the first 15, at least from general observation (eye method). Its hard to determine, whether there actually is an optimal amount of components, but some are definitely better than others.
+When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seens to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
+
+Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical reuslts.
 
 ## Results
-- [ ] ❓talk about three quarter view in the results (not completely frontal faces), if they have been grouped together
+There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face. 
+Faces that were rotated about three quarters to either left or right were often clustered together, even though they did not look very similar to each other. However, this did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. Same goes with glasses and lightning.
+Both methods were adequate at producing reasonable clusters. 
