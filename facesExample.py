@@ -4,6 +4,5 @@ dictionary_of_names = {'chalmovians1': 'https://sluzby.fmph.uniba.sk/f/chalmovia
 dictionary_of_mathematicians = {'Gauss': 'https://www.thefamouspeople.com/profiles/images/carl-f-gauss-2.jpg', 
                                 'Neumann': 'https://www.thefamouspeople.com/profiles/images/john-von-neumann-5.jpg',
                                 'Turing': 'https://cdn.britannica.com/81/191581-050-8C0A8CD3/Alan-Turing.jpg',
-                                'Hilbert': 'https://www.daviddarling.info/images/Hilbert.jpg',
-                                'Einstein': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/1200px-Albert_Einstein_Head.jpg',
-                                'Johnson': 'https://www.nasa.gov/sites/default/files/thumbnails/image/26646856911_ca242812ee_o_1.jpg'}
+                                'Einstein': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/1200px-Albert_Einstein_Head.jpg'
+                               }

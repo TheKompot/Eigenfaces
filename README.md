@@ -11,7 +11,8 @@ This project is focused on using Principal Component Analysis (PCA) on photos. W
 Web scraping was carried out using Python libraries `requests` (https://requests.readthedocs.io/en/latest/) and `beautifulsoup4` (https://pypi.org/project/beautifulsoup4/)
 
 ##
-*First let's look at PCA algorithm.*
+## Theory
+First let's look at PCA algorithm.
 
 ## PCA
 PCA is technique used for dimensionality reduction. When we have a dataset of $m$ face images of size $N$ x $N$ and we want to convert them into vectors and put them together, we get a matrix $X$ with the shape $m$ x $N^2$ (number_of_pictures x width_of_picture^2). The variable $N^2$ can be easily in the tens of thousands, which would be inefficient and troublesome to compute.
@@ -78,13 +79,12 @@ We will not show you how to solve these equations, to stop boring you with basic
 Reference: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/
 
 ##
-*In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format.*
+In order for the PCA algorithm to work properly, we need to pre-process the input data into a uniform format.
 
 ## Image pre-processing
 All input images need to:
 * contain only one face in a specified *position*
 * have the same *size*
-* have their *brightness* adjusted
 
 ### Face positioning
 The face which we wish to input into the algorithm can be rotated and positioned anywhere in the original image. 
@@ -110,19 +110,97 @@ So far, we have just aligned the face. The only thing left is to extract the fac
 
 ![kollareyesFinal](https://user-images.githubusercontent.com/96919296/210490239-282d08f6-97ec-4fab-9d1b-76318b826810.jpg)
 
-### Size and brightness
-These two parameters are quite easy to unify. Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
-As for brightness, we decided to use equalisation of the histogram technique. This helps with unifying the brightness of the images, as well enhances the images contrast. Such alteration yealds:
+#### Size
+Resizing is a standard task. We just needed to select a reasonable size. Based on the images we are using, we chose size 100x100 pixels.
+
+#### Brightness 
+Brightness seems to have a great impact on the results. To mitigate this effect, we tried using the equalisation of the histogram technique. In theory, this helps with unifying the brightness of the images as well enhances the image's contrast. Such alteration yealds:
 
 ![kollareyesFinal2](https://user-images.githubusercontent.com/96919296/210489796-d224f7b3-c85b-470c-bdae-aeaf1a631e4b.jpg)
 
-(this image is 200x200 for viewing purposes)
+Sadly, the overall results did not benefit from this. The various backgrounds and other differences such as lighting influenced the final image. This technique highlited them instead of removing them.
 
-## Clustering and Classfication
-talk about:
-*   in which process of clustering and classfication do we use PCA
-* what supervised and unsupervised algorithms did we try
-* compare their stats 
+In the end, we deciced not to change the brightness at all.
 
-## Results
-- [ ] ❓talk about three quarter view in the results (not completely frontal faces), if they have been grouped together
+
+## 
+After we scrape and pre-process our desired image set, we need to perfom dimensionality reduction. PCA reduces the complexity of high dimensional data, while preserving trends and patterns.
+PCA projects data into lower dimensions, by maximizing the variance of projected points (all must be uncorrelated). We achieved 95% variance using 75 components, however, the clustering seemed better
+when using just the first 15, at least for human perception of the faces.
+When comparing our own PCA algorithm with sklearn-imported one, the average face from both is completely identical, however, the feature faces (principal components) seem to have lightning swapped,
+but other than that, are identical as well.
+
+##
+## Applying the theory (Clustering and Classfication)
+
+### Resemblance 
+One of the questions we investigated was finding people from our image dataset, that resemble famous mathematicians, namely Gauss, Neumann, Turing and Einstein.
+First, we performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
+There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and the mathematicians and selected the closest images from our dataset.
+
+The restults are as follows:
+
+![Mathematicians](https://user-images.githubusercontent.com/93282067/213715362-900767de-1303-462a-a9dd-b5a3fb0923e7.png)
+
+### Clustering Algorithms and Tuning
+The second question we investigated, the main goal of creating a clustering was to find groups of people from the Faculty of Mathematics, Physics and Informatics of the Comenius University that looked the most alike.
+
+We tried 2 unsupervised algorithms, K-Means and Gaussian Mixture. We did not use any supervised methods, since we did not work with any labeled data. We basically had only two parameters for tuning:
+* Number of components
+* Number of clusters
+
+We can easily determine the optimal number of clusters using either the silhouette score, or elbow method. Silhouette score is easier to use, since it basically just boils down to getting the index of a maximum number from a list of numbers and we had no clear "elbow" in the elbow method.
+Elbow method plots the explained variation and we just have to look at a point where diminishing returns are no longer worth the additional cost.
+Silhouette method measures how similar object is to its own cluster compared to other clusters (using Euclidean distance).
+
+Here we can see our Silhouette scores, we pick the number of clusters that correspond with the highest y-axis value:
+
+![sil](https://user-images.githubusercontent.com/93282067/213774705-bdfb328b-ecaa-48d2-b741-1f307b57c690.png)
+
+We tried different numbers of components, ranging from 2 to 75, but the best results seem to be produced when using the first 15, at least from general observation (eye method). Its hard to determine, whether there actually is an optimal amount of components, but some are definitely better than others.
+
+When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seems to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
+
+![km vs gm](https://user-images.githubusercontent.com/93282067/213715627-21b6255a-398c-41ae-8635-9086b9654b3f.png)
+
+Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical results when clustering our image dataset.
+
+
+
+### Results and observations
+There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face that affected the result clustering. 
+Faces that were rotated about three quarters to either left or right were often grouped together, even though they did not look very similar to each other. This, however, did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
+
+Both methods were adequate at producing reasonable clusters. 
+
+#### Examples of K-Means Cluster:
+
+Group 1:
+
+![K-Means Cluster 1](https://user-images.githubusercontent.com/93282067/213715220-bb32fb24-ec22-487a-a5a5-d761c56531f1.png)
+
+Group 2:
+
+![K-Means Cluster 2](https://user-images.githubusercontent.com/93282067/213773816-f72044f2-6b65-428e-9557-d31d347e4ba7.png)
+
+Group 3:
+
+![K-Means Cluster 3](https://user-images.githubusercontent.com/93282067/213773825-5453ae7f-4634-4867-aefd-c573e68c0dc7.png)
+
+People with loose hair are clustered in Group 1. Since loose hair are more common for women, it can be the reason why there are 8 women and only one man. We can also notice that most of these faces have square shape. Group 2 consists of 6 men with short hair. Three of them are wearing rimless glasses, so you can barely see them. Eventhough, mustache and beard might look like the most significant feature of Group 3, people in this group have very similar facial expressions. 
+
+#### Examples of Gaussian Mixture Cluster:
+
+Group 1:
+
+![Gaussian Mixture Cluster 1](https://user-images.githubusercontent.com/93282067/213714912-aae55dd6-f350-4141-8ca4-755ce7e6eecc.png)
+
+Group 2:
+
+![Gaussian Mixture Cluster 2](https://user-images.githubusercontent.com/93282067/213773834-6d27405d-3f94-45f5-80e0-87d350d79752.png)
+
+Group 3:
+
+![Gaussian Mixture Cluster 3](https://user-images.githubusercontent.com/93282067/213773838-d0dcb0ce-fbd2-4f7d-8d18-3987075745df.png)
+
+Young women with long dark loose hair and thin eyebrows are clustered in Group 1. On the other hand, mature women with typical short cut are clustered in Group 2. People in Group 3 do not show much hair in the photo, their lips and noses are pretty similar. Five of six people in this group are wearing glasses with dark frame.
