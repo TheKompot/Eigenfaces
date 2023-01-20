@@ -11,6 +11,7 @@ This project is focused on using Principal Component Analysis (PCA) on photos. W
 Web scraping was carried out using Python libraries `requests` (https://requests.readthedocs.io/en/latest/) and `beautifulsoup4` (https://pypi.org/project/beautifulsoup4/)
 
 ##
+## Theory
 First let's look at PCA algorithm.
 
 ## PCA
@@ -129,16 +130,19 @@ when using just the first 15, at least for human perception of the faces.
 When comparing our own PCA algorithm with sklearn-imported one, the average face from both is completely identical, however, the feature faces (principal components) seem to have lightning swapped,
 but other than that, are identical as well.
 
-## Clustering and Classfication
+##
+## Applying the theory (Clustering and Classfication)
 
-We used several images of famous mathematicians, namely Gauss, Neumann, Turing and Einstein and attempted to find person from our image dataset, that resembles each of the mathematicians the most. 
-We performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
-There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and mathematicians and selected the closest ones.
+### Resemblance 
+One ot the questions we investigated was finding people from our image dataset, that resemble famous mathematicians, namely Gauss, Neumann, Turing and Einstein.
+First, we performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
+There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and the mathematicians and selected the closest images from our dataset.
 
+The restults are as follows:
 ![Mathematicians](https://user-images.githubusercontent.com/93282067/213715362-900767de-1303-462a-a9dd-b5a3fb0923e7.png)
 
 ### Clustering Algorithms and Tuning
-The main goal of our clustering was to find groups of people from the Faculty of Mathematics, Physics and Informatics of Comenius University that looked the most alike.
+The second question we investigated, the main goal of creating a clustering was to find groups of people from the Faculty of Mathematics, Physics and Informatics of the Comenius University that looked the most alike.
 
 We tried 2 unsupervised algorithms, K-Means and Gaussian Mixture. We did not use any supervised methods, since we did not work with any labeled data. We basically had only two parameters for tuning:
 * Number of components
@@ -166,8 +170,11 @@ Example of Gaussian Mixture Cluster:
 
 ![Gaussian Mixture Cluster](https://user-images.githubusercontent.com/93282067/213714912-aae55dd6-f350-4141-8ca4-755ce7e6eecc.png)
 
-## Results
-There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face. 
-Faces that were rotated about three quarters to either left or right were often clustered together, even though they did not look very similar to each other. However, this did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
 
 Both methods were adequate at producing reasonable clusters. 
+
+#### Results and observations
+There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face that affected the result clustering. 
+Faces that were rotated about three quarters to either left or right were often grouped together, even though they did not look very similar to each other. This, however, did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
+
+
