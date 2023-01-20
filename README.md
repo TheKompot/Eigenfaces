@@ -153,6 +153,10 @@ We can easily determine the optimal number of clusters using either the silhouet
 Elbow method plots the explained variation and we just have to look at a point where diminishing returns are no longer worth the additional cost.
 Silhouette method measures how similar object is to its own cluster compared to other clusters (using Euclidean distance).
 
+Here we can see our Silhouette scores, we pick the number of clusters that correspond with the highest y-axis value:
+
+![sil](https://user-images.githubusercontent.com/93282067/213774705-bdfb328b-ecaa-48d2-b741-1f307b57c690.png)
+
 We tried different numbers of components, ranging from 2 to 75, but the best results seem to be produced when using the first 15, at least from general observation (eye method). Its hard to determine, whether there actually is an optimal amount of components, but some are definitely better than others.
 
 When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seems to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
@@ -161,21 +165,41 @@ When using both algorithms on a trivial, easily plottable (2D) cases, they often
 
 Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical reuslts when clustering our image dataset.
 
-Example of K-Means Cluster:
 
 
-![K-Means Cluster](https://user-images.githubusercontent.com/93282067/213715220-bb32fb24-ec22-487a-a5a5-d761c56531f1.png)
-
-Example of Gaussian Mixture Cluster:
-
-
-![Gaussian Mixture Cluster](https://user-images.githubusercontent.com/93282067/213714912-aae55dd6-f350-4141-8ca4-755ce7e6eecc.png)
-
+### Results and observations
+There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face that affected the result clustering. 
+Faces that were rotated about three quarters to either left or right were often grouped together, even though they did not look very similar to each other. This, however, did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
 
 Both methods were adequate at producing reasonable clusters. 
 
-#### Results and observations
-There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face that affected the result clustering. 
-Faces that were rotated about three quarters to either left or right were often grouped together, even though they did not look very similar to each other. This, however, did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
+#### Examples of K-Means Cluster:
+
+Group 1:
+
+![K-Means Cluster 1](https://user-images.githubusercontent.com/93282067/213715220-bb32fb24-ec22-487a-a5a5-d761c56531f1.png)
+
+Group 2:
+
+![K-Means Cluster 2](https://user-images.githubusercontent.com/93282067/213773816-f72044f2-6b65-428e-9557-d31d347e4ba7.png)
+
+Group 3:
+
+![K-Means Cluster 3](https://user-images.githubusercontent.com/93282067/213773825-5453ae7f-4634-4867-aefd-c573e68c0dc7.png)
+
+
+#### Examples of Gaussian Mixture Cluster:
+
+Group 1:
+
+![Gaussian Mixture Cluster 1](https://user-images.githubusercontent.com/93282067/213714912-aae55dd6-f350-4141-8ca4-755ce7e6eecc.png)
+
+Group 2:
+
+![Gaussian Mixture Cluster 2](https://user-images.githubusercontent.com/93282067/213773834-6d27405d-3f94-45f5-80e0-87d350d79752.png)
+
+Group 3:
+
+![Gaussian Mixture Cluster 3](https://user-images.githubusercontent.com/93282067/213773838-d0dcb0ce-fbd2-4f7d-8d18-3987075745df.png)
 
 
