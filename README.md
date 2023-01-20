@@ -127,7 +127,15 @@ when using just the first 15, at least for human perception of the faces.
 When comparing our own PCA algorithm with sklearn-imported one, the average face from both is completely identical, however, the feature faces (principal components) seem to have lightning swapped,
 but other than that, are identical as well.
 
+We used several images of famous mathematicians, namely Gauss, Neumann, Turing and Einstein and attempted to find person from our image dataset, that resembles each of the mathematicians the most. 
+We performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
+There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and mathematicians and selected the closest ones.
+
+![Mathematicians](https://user-images.githubusercontent.com/93282067/213715362-900767de-1303-462a-a9dd-b5a3fb0923e7.png)
+
 ### Clustering Algorithms and Tuning
+The main goal of our clustering was to find groups of people from the Faculty of Mathematics, Physics and Informatics of Comenius University that looked the most alike.
+
 We tried 2 unsupervised algorithms, K-Means and Gaussian Mixture. We did not use any supervised methods, since we did not work with any labeled data. We basically had only two parameters for tuning:
 * Number of components
 * Number of clusters
@@ -137,11 +145,25 @@ Elbow method plots the explained variation and we just have to look at a point w
 Silhouette method measures how similar object is to its own cluster compared to other clusters (using Euclidean distance).
 
 We tried different numbers of components, ranging from 2 to 75, but the best results seem to be produced when using the first 15, at least from general observation (eye method). Its hard to determine, whether there actually is an optimal amount of components, but some are definitely better than others.
+
 When using both algorithms on a trivial, easily plottable (2D) cases, they often perform very differently. K-Means seens to produce more reasonable clusterings than Gaussian Mixture, at least in our case.
+
+![km vs gm](https://user-images.githubusercontent.com/93282067/213715627-21b6255a-398c-41ae-8635-9086b9654b3f.png)
 
 Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical reuslts when clustering our image dataset.
 
+Example of K-Means Cluster:
+
+
+![K-Means Cluster](https://user-images.githubusercontent.com/93282067/213715220-bb32fb24-ec22-487a-a5a5-d761c56531f1.png)
+
+Example of Gaussian Mixture Cluster:
+
+
+![Gaussian Mixture Cluster](https://user-images.githubusercontent.com/93282067/213714912-aae55dd6-f350-4141-8ca4-755ce7e6eecc.png)
+
 ## Results
 There were several, perhaps unwanted features, namely lightning (too dark/too light), glasses, and rotation of the face. 
-Faces that were rotated about three quarters to either left or right were often clustered together, even though they did not look very similar to each other. However, this did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. Same goes with glasses and lightning.
+Faces that were rotated about three quarters to either left or right were often clustered together, even though they did not look very similar to each other. However, this did not occur very often, so even though the algorithms sometimes clustered based on these features, we still received satisfactory results. There were not any groups that were clustered based solely on their rotation of face. Same goes with glasses and lightning.
+
 Both methods were adequate at producing reasonable clusters. 
