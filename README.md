@@ -187,6 +187,7 @@ Group 3:
 
 ![K-Means Cluster 3](https://user-images.githubusercontent.com/93282067/213773825-5453ae7f-4634-4867-aefd-c573e68c0dc7.png)
 
+People with loose hair are clustered in Group 1. Since loose hair are more common for women, it can be the reason why there are 8 women and only one man. We can also notice that most of these faces have square shape. Group 2 consists of 6 men with short hair. Three of them are wearing rimless glasses, so you can barely see them. Eventhough, mustache and beard might look like the most significant feature of Group 3, people in this group have very similar facial expressions. 
 
 #### Examples of Gaussian Mixture Cluster:
 
@@ -202,4 +203,4 @@ Group 3:
 
 ![Gaussian Mixture Cluster 3](https://user-images.githubusercontent.com/93282067/213773838-d0dcb0ce-fbd2-4f7d-8d18-3987075745df.png)
 
-
+Young women with long dark loose hair and thin eyebrows are clustered in Group 1. On the other hand, mature women with typical short cut are clustered in Group 2. People in Group 3 do not show much hair in the photo, their lips and noses are pretty similar. Five of six people in this group are wearing glasses with dark frame.
