@@ -134,7 +134,7 @@ but other than that, are identical as well.
 ## Applying the theory (Clustering and Classfication)
 
 ### Resemblance 
-One ot the questions we investigated was finding people from our image dataset, that resemble famous mathematicians, namely Gauss, Neumann, Turing and Einstein.
+One of the questions we investigated was finding people from our image dataset, that resemble famous mathematicians, namely Gauss, Neumann, Turing and Einstein.
 First, we performed the dimensionality reduction on our main dataset and transformed mathematician images using our trained PCA.
 There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and the mathematicians and selected the closest images from our dataset.
 
@@ -163,7 +163,7 @@ When using both algorithms on a trivial, easily plottable (2D) cases, they often
 
 ![km vs gm](https://user-images.githubusercontent.com/93282067/213715627-21b6255a-398c-41ae-8635-9086b9654b3f.png)
 
-Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical reuslts when clustering our image dataset.
+Its difficult to objectively assess which algorithm is better, they both seem to produce qualitatively almost identical results when clustering our image dataset.
 
 
 
