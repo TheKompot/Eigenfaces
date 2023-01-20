@@ -139,6 +139,7 @@ First, we performed the dimensionality reduction on our main dataset and transfo
 There was no need to use any clustering algorithm, we simply calculated the euclidean distance between the first 15 decomposed features between our main dataset and the mathematicians and selected the closest images from our dataset.
 
 The restults are as follows:
+
 ![Mathematicians](https://user-images.githubusercontent.com/93282067/213715362-900767de-1303-462a-a9dd-b5a3fb0923e7.png)
 
 ### Clustering Algorithms and Tuning
